@@ -1,5 +1,13 @@
-#include<bits/stdc++.h>
+#include<iostream>
+#include<cstdio>
+#include<bitset>
+#include<windows.h>
+#include<vector>
+#include<map>
+#define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1:0) //必要的，我是背下来的 
 using namespace std;
+
+//文本处理
 const int N=10004;
 char cc[N];
 vector<string>s;
@@ -16,11 +24,10 @@ string ed[ne]={"”","。","？","！","）","；","："};
 string punctuation[np]={"《","》","（","“","，","、","‘","’","·"};
 struct NODE{
 	vector<string>s;
-	int L,R,fa;
+	int L,R,fa,c;
 }nd[N];
 vector<int>g[N];
-int t;//cur
-int lv[5];
+int t,lv[5];
 #define p lv[1]
 #define d lv[2]
 #define ju lv[3]
@@ -29,7 +36,7 @@ void mlv(int i){
 	++t;
 	g[lv[i-1]].push_back(t);
 	nd[t].L=lv[i],nd[lv[i]].R=t;nd[t].fa=lv[i];
-	lv[i]=t;
+	lv[i]=t;nd[t].c=i;
 }
 void clean(){
 	int a=0,j=0;
@@ -51,24 +58,18 @@ void print(vector<string>&v){
 	for(auto x:v)cout<<x;
 	cout<<endl;
 }
-void test(){
-	for(int x:g[0]) print(nd[x].s);
-}
-int main(){
+void processing_text(){
 	freopen("../IO/text.txt","r",stdin);
 	for(int i=0;i<ne;i++)en[ed[i]]=pun[ed[i]]=1;
 	for(int i=0;i<np;i++)pun[punctuation[i]]=1;
-	// int n=2;
 	int n=60;
 	while(n--){
 		for(;gets(cc),!cc[0];cc[0]=0);
 		clean();tran();
 		mlv(1); nd[t].s=s;
-		// print(s);	
 		for(;gets(cc),cc[0];cc[0]=0){
 			clean();tran();
 			mlv(2); nd[p].s.emplace_back("\n");nd[p].s=nd[p].s+s; nd[d].s=s;
-			// print(s);	
 			for(int i=0;i<len;i++){
 				if(i==0||!en.count(s[i])&&en.count(s[i-1]))mlv(3),mlv(4);
 				else if(i==0||s[i-1]=="，")mlv(4);
@@ -78,5 +79,61 @@ int main(){
 			}
 		}
 	}
-	test();
+}
+
+//按键交互
+bitset<30>down;//记录当前键盘按下状态
+bitset<30>pre;//记录前一时刻键盘按下状态
+void check(char c){//检测某个按键是否按下，按下就改变一下变量
+	if(!KEY_DOWN(c))down[c-'A']=0;
+	else down[c-'A']=1;
+}
+char keys[4]={'h','j','k','l'};
+int po,ind;
+void show(){
+	int cnt=0;
+	for(auto x:nd[g[po][ind]].s){
+		cnt++; cout<<x;
+		if(cnt==30)cout<<endl;
+	}
+}
+void go_back(int a,int b){
+	
+	
+}
+void display(){
+    system("cls");
+	if(down[7]){//H
+		po=nd[po].fa;
+	}
+	if(down[11]){//L
+		
+	}
+	if(down[9]){//J
+
+	}
+	if(down[10]){//K
+		if(ind)ind-=1;
+		else go_back(po,ind);
+
+
+	}
+	
+	show();
+}
+void keyboard_monitor(){
+	po=0;ind=0;
+    system("cls");
+	printf("ROOT");
+	while(1){
+	    pre=down;
+		for(auto c:keys)check(c);
+	    if(down!=pre)display();
+		Sleep(20);
+    }
+}
+
+int main(){
+	processing_text();
+	keyboard_monitor();
 }
