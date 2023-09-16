@@ -1,12 +1,8 @@
 #include<bits/stdc++.h>
 using namespace std;
-char s[100];
+string s="⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮⑯⑰⑱⑲⑳㉑㉒㉓㉔㉕㉖㉗㉘㉙㉚㉛㉜㉝㉞㉟㊱㊲㊳㊴㊵㊶㊷㊸㊹㊺㊻㊼㊽㊾㊿";
 int main(){
-	gets(s);cout<<s[0];
-	cout<<(!s[0]);
-	gets(s);cout<<s[0];
-	cout<<(!s[0]);
-	gets(s);cout<<s[0];
-	cout<<(!s[0]);
-	gets(s);cout<<s[0];cout<<(!s[0]);
+	for(int i=0;i<153;cout<<endl,i++)
+	for(int j=0;j<=i;j++)
+	cout<<s[j];
 }

@@ -11,9 +11,9 @@ vector<T> &operator +(vector<T> &v1,vector<T> &v2){
 int len;
 map<string,int>en,pun;
 map<string,vector<int>>kanji;
-const int ne=7,np=8;
+const int ne=7,np=9;
 string ed[ne]={"”","。","？","！","）","；","："};
-string punctuation[np]={"《","》","（","“","，","、","‘","’"};
+string punctuation[np]={"《","》","（","“","，","、","‘","’","·"};
 struct NODE{
 	vector<string>s;
 	int L,R,fa;
@@ -34,7 +34,7 @@ void mlv(int i){
 void clean(){
 	int a=0,j=0;
 	for(;cc[j];j++,a++){
-		while(cc[j]&&(cc[j]==' '||cc[j]<='z'&&cc[j]>='a'))j++;
+		while(cc[j]&&(cc[j]==' '||cc[j]<='z'&&cc[j]>='a'||cc[j]=='#'||cc[j]=='@'||cc[j]>='0'&&cc[j]<='9'))j++;
 		cc[a]=cc[j];
 	}
 	for(;a<=j;a++)cc[a]=0;
