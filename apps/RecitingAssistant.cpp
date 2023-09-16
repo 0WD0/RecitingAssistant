@@ -40,20 +40,26 @@ void clean(){
 	for(;a<=j;a++)cc[a]=0;
 }
 void tran(){
-	len=strlen(cc)/3;s.clear();
-	for(int i=0;i<len;i++)s.emplace_back((string)""+cc[i*3]+cc[i*3+1]+cc[i*3+2]);
+	int i,j; s.clear();
+	for(i=0,j=0;cc[i];j++){
+		if((string)""+cc[i]+cc[i+1]=="·")s.emplace_back("·"),i+=2;
+		else s.emplace_back((string)""+cc[i]+cc[i+1]+cc[i+2]),i+=3;
+	}
+	len=j;
 }
 void print(vector<string>&v){
 	for(auto x:v)cout<<x;
 	cout<<endl;
 }
 void test(){
-	for(int x:g[5]) print(nd[x].s);
+	for(int x:g[0]) print(nd[x].s);
 }
 int main(){
+	freopen("../IO/text.txt","r",stdin);
 	for(int i=0;i<ne;i++)en[ed[i]]=pun[ed[i]]=1;
 	for(int i=0;i<np;i++)pun[punctuation[i]]=1;
-	int n=1;
+	// int n=2;
+	int n=60;
 	while(n--){
 		for(;gets(cc),!cc[0];cc[0]=0);
 		clean();tran();
@@ -61,7 +67,7 @@ int main(){
 		// print(s);	
 		for(;gets(cc),cc[0];cc[0]=0){
 			clean();tran();
-			mlv(2); nd[p].s=nd[p].s+s; nd[d].s=s;
+			mlv(2); nd[p].s.emplace_back("\n");nd[p].s=nd[p].s+s; nd[d].s=s;
 			// print(s);	
 			for(int i=0;i<len;i++){
 				if(i==0||!en.count(s[i])&&en.count(s[i-1]))mlv(3),mlv(4);
