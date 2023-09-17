@@ -17,11 +17,12 @@ vector<T> &operator +(vector<T> &v1,vector<T> &v2){
 	return v1;
 }
 int len;
-map<string,int>en,pun;
+map<string,int>en,pun,cir;
 map<string,vector<int>>kanji;
 const int ne=7,np=9;
 string ed[ne]={"”","。","？","！","）","；","："};
 string punctuation[np]={"《","》","（","“","，","、","‘","’","·"};
+string ord[55]={"⓪","①","②","③","④","⑤","⑥","⑦","⑧","⑨","⑩","⑪","⑫","⑬","⑭","⑮","⑯","⑰","⑱","⑲","⑳","㉑","㉒","㉓","㉔","㉕","㉖","㉗","㉘","㉙","㉚","㉛","㉜","㉝","㉞","㉟","㊱","㊲","㊳","㊴","㊵","㊶","㊷","㊸","㊹","㊺","㊻","㊼","㊽","㊾","㊿"};
 struct NODE{
 	vector<string>s;
 	int L,R,fa,c,od;
@@ -47,11 +48,16 @@ void clean(){
 	}
 	for(;a<=j;a++)cc[a]=0;
 }
+string z;
 void tran(){
 	int i,j; s.clear();
 	for(i=0,j=0;cc[i];j++){
 		if((string)""+cc[i]+cc[i+1]=="·")s.emplace_back("·"),i+=2;
-		else s.emplace_back((string)""+cc[i]+cc[i+1]+cc[i+2]),i+=3;
+		else{
+			z=(string)""+cc[i]+cc[i+1]+cc[i+2];
+			// if(!cir.count(z))
+			s.emplace_back(z),i+=3;
+		}
 	}
 	len=j;
 }
@@ -59,10 +65,14 @@ void print(vector<string>&v){
 	for(auto x:v)cout<<x;
 	cout<<endl;
 }
-void processing_text(){
-	freopen("../IO/text.txt","r",stdin);
+void init(){
 	for(int i=0;i<ne;i++)en[ed[i]]=pun[ed[i]]=1;
 	for(int i=0;i<np;i++)pun[punctuation[i]]=1;
+	for(int i=0;i<=50;i++)cir[ord[i]]=1;
+}
+void processing_text(){
+	freopen("../IO/text.txt","r",stdin);
+	init();
 	int n=60;
 	while(n--){
 		for(;gets(cc),!cc[0];cc[0]=0);
