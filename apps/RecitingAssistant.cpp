@@ -102,7 +102,7 @@ void processing_text(){
 	}
 }
 
-//按键交互
+//键盘交互
 bitset<30>down;
 bitset<30>pre;
 void check(char c){
@@ -138,9 +138,10 @@ void display(){
 	show();
 }
 void keyboard_monitor(){
+	system("chcp 65001");
 	po=0;ind=0;
 	system("cls");
-	printf("ROOT");
+	show();
 	while(1){
 		pre=down;
 		for(auto c:keys)check(c);
