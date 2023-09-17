@@ -4,7 +4,7 @@
 #include<windows.h>
 #include<vector>
 #include<map>
-#define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1:0) //必要的，我是背下来的 
+#define KEY_DOWN(VK_NONAME) ((GetAsyncKeyState(VK_NONAME) & 0x8000) ? 1:0)
 using namespace std;
 
 //文本处理
@@ -94,9 +94,9 @@ void processing_text(){
 }
 
 //按键交互
-bitset<30>down;//记录当前键盘按下状态
-bitset<30>pre;//记录前一时刻键盘按下状态
-void check(char c){//检测某个按键是否按下，按下就改变一下变量
+bitset<30>down;
+bitset<30>pre;
+void check(char c){
 	if(!KEY_DOWN(c))down[c-'A']=0;
 	else down[c-'A']=1;
 }
@@ -106,7 +106,6 @@ void show(){
 	for(auto x:nd[g[po][ind]].s)cout<<x;
 }
 void display(){
-    system("cls");
 	if(down[7]&&nd[po].c!=0){//H
 		ind=nd[po].od;
 		po=nd[po].fa;
@@ -123,6 +122,7 @@ void display(){
 		if(ind)ind--;
 		else po=nd[nd[g[po][ind]].L].fa,ind=g[po].size()-1;
 	}
+    system("cls");
 	show();
 }
 void keyboard_monitor(){
@@ -132,7 +132,7 @@ void keyboard_monitor(){
 	while(1){
 	    pre=down;
 		for(auto c:keys)check(c);
-	    if(down!=pre)display();
+	    if(down.to_ulong()>pre.to_ulong())display();
 		Sleep(20);
     }
 }
