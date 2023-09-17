@@ -8,7 +8,7 @@
 using namespace std;
 
 //文本处理
-const int N=10004;
+const int N=100005;
 char cc[N];
 vector<string>s;
 template <typename T>
@@ -24,18 +24,19 @@ string ed[ne]={"”","。","？","！","）","；","："};
 string punctuation[np]={"《","》","（","“","，","、","‘","’","·"};
 struct NODE{
 	vector<string>s;
-	int L,R,fa,c;
+	int L,R,fa,c,od;
 }nd[N];
 vector<int>g[N];
-int t,lv[5];
+int t,lv[6];
 #define p lv[1]
 #define d lv[2]
 #define ju lv[3]
 #define xj lv[4]
+#define dz lv[5]
 void mlv(int i){
-	++t;
+	++t;nd[t].od=g[lv[i-1]].size();
 	g[lv[i-1]].push_back(t);
-	nd[t].L=lv[i],nd[lv[i]].R=t;nd[t].fa=lv[i];
+	nd[t].L=lv[i],nd[lv[i]].R=t;nd[t].fa=lv[i-1];
 	lv[i]=t;nd[t].c=i;
 }
 void clean(){
@@ -75,6 +76,7 @@ void processing_text(){
 				else if(i==0||s[i-1]=="，")mlv(4);
 				nd[xj].s.emplace_back(s[i]);
 				nd[ju].s.emplace_back(s[i]);
+				mlv(5);nd[dz].s.emplace_back(s[i]);
 				if(pun.count(s[i]))kanji[s[i]].push_back(xj);
 			}
 		}
@@ -88,37 +90,29 @@ void check(char c){//检测某个按键是否按下，按下就改变一下变�
 	if(!KEY_DOWN(c))down[c-'A']=0;
 	else down[c-'A']=1;
 }
-char keys[4]={'h','j','k','l'};
+char keys[4]={'H','J','K','L'};
 int po,ind;
 void show(){
-	int cnt=0;
-	for(auto x:nd[g[po][ind]].s){
-		cnt++; cout<<x;
-		if(cnt==30)cout<<endl;
-	}
-}
-void go_back(int a,int b){
-	
-	
+	for(auto x:nd[g[po][ind]].s)cout<<x;
 }
 void display(){
     system("cls");
-	if(down[7]){//H
+	if(down[7]&&nd[po].c!=0){//H
+		ind=nd[po].od;
 		po=nd[po].fa;
 	}
-	if(down[11]){//L
-		
+	if(down[11]&&nd[po].c!=4){//L
+		po=g[po][ind];
+		ind=0;
 	}
 	if(down[9]){//J
-
+		if(ind<g[po].size()-1)ind++;
+		else po=nd[nd[g[po][ind]].R].fa,ind=0;
 	}
 	if(down[10]){//K
-		if(ind)ind-=1;
-		else go_back(po,ind);
-
-
+		if(ind)ind--;
+		else po=nd[nd[g[po][ind]].L].fa,ind=g[po].size()-1;
 	}
-	
 	show();
 }
 void keyboard_monitor(){
